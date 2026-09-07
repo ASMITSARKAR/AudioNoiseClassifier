@@ -1,0 +1,39 @@
+audio:
+
+  sample_rate: 22050
+
+  window_size_sec: 1.0
+  hop_size_sec: 0.5
+
+  n_fft: 1024
+  hop_length: 512
+  win_length: 1024
+  window: "hann"
+
+  n_mels: 64
+  n_mfcc: 20
+  f_min: 20.0
+  f_max: 11025.0
+
+dataset:
+  name: "esc-50"
+  url: "https://github.com/karolpiczak/ESC-50/archive/master.zip"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  extracted_features_file: "data/processed/features_esc50.parquet"
+
+evaluation:
+  cv_strategy: "predefined_folds"
+  n_folds: 5
+  random_seed: 42
+
+  cost_weights:
+    impulsive_misclassified_as_stationary: 3.0
+    non_stationary_misclassified_as_stationary: 2.0
+    stationary_misclassified_as_impulsive: 1.5
+    default_error: 1.0
+
+benchmark:
+  n_warmup: 50
+  n_iterations: 1000
+  target_latency_budget_ms: 10.0

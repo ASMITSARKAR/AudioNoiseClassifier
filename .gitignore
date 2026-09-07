@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Datasets and generated feature caches (downloaded via dataset loader)
+data/raw/
+data/processed/
+
+# Automation script
+make_history.bat
+make_history.sh
+
+# IDE and OS artifacts
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
