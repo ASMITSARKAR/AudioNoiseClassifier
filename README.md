@@ -232,7 +232,40 @@ All measurements taken on standard x86 CPU hardware processing 500ms audio chunk
 
 ---
 
-## License
+## AI vs. Human Contribution
 
-This project is licensed under the MIT License.
-The ESC-50 dataset is authored by Karol J. Piczak and licensed under Creative Commons Attribution-NonCommercial (CC BY-NC 3.0).
+This project was engineered through a disciplined human-in-the-loop paradigm: system architecture, acoustic domain theory, mathematical formulations, and hardware constraints were conceptualized and guided by the human developer, with an agentic LLM leveraged as a high-throughput implementation accelerator for code synthesis, syntax translation, and test scaffolding.
+
+### Collaborative Breakdown
+
+| Lifecycle Area | Human Architecture, Formulation & Analysis | AI Acceleration & Code Synthesis |
+| :--- | :--- | :--- |
+| **System Architecture** | Designed the 2-stage hybrid routing topology; established edge latency (<10 ms) and zero-heap memory constraints for embedded deployment; defined the 3-regime noise taxonomy. | Explored alternative neural vs. classical topologies; generated initial modular project scaffolding and boilerplate routing interfaces. |
+| **DSP Filter Engineering** | Specified filter family requirements (COLA Spectral Subtraction, Leaky NLMS with decorrelation delay, sliding MAD); derived phase-continuous crossfade boundary conditions to eliminate transient switching clicks. | Generated baseline SciPy/NumPy vector implementations, sliding window buffer handlers, and array indexing logic. |
+| **Cost-Sensitive Learning** | Diagnosed the failure mode where impulsive spikes corrupt recursive PSD averaging; mathematically formulated the asymmetric Bayes risk loss strategy and tuned penalty margins to suppress transient leakage down to 1.4%. | Vectorized the Bayes risk loss equations, implemented the decision head boilerplate, and scripted cross-validation grid search loops. |
+| **Acoustic Feature Engineering** | Formulated the 92-descriptor acoustic feature schema spanning temporal kinetics, spectral flux, subband energy, and MFCC dynamics suited for real-time edge discrimination. | Generated repetitive feature extraction routines, Mel filterbank helper functions, and PyArrow Parquet serialization pipelines. |
+| **Embedded C99 Runtime** | Architected the zero-heap memory layout, static circular ring buffers, and AST parsing schema for transpiling Scikit-Learn tree ensembles to static C arrays. | Synthesized static array emitters (`hgb_forest.c`), repetitive C header prototypes, and microsecond cycle profiler wrappers. |
+| **Verification & Benchmarking** | Established strict numerical parity gates ($r > 0.999$ across Python and C99); designed audio edge cases (silence, clipping, DC offsets, transient bursts); debugged cross-language floating-point drift. | Synthesized parameterized `pytest` fixtures, synthetic signal sweeps, and assertion harnesses. |
+| **Tooling & Documentation** | Defined the technical narrative, benchmark criteria, deployment guidelines, and configuration specifications. | Formatted Markdown benchmark tables, LaTeX mathematical notations, docstrings, and CLI runner argument parsers. |
+
+### Engineering Takeaway
+
+The division of responsibilities adhered strictly to **domain intent vs. code synthesis**: the human developer directed the acoustic problem formulation, mathematical risk objectives, and embedded memory budgets, while the AI assistant accelerated the translation of those specifications into executable Python, C99, and automated test fixtures. Every synthesized component was iteratively audited, debugged, and verified against empirical acoustic and latency benchmarks.
+
+---
+
+## Dataset Description & Licensing
+
+### Dataset: ESC-50 (Environmental Sound Classification)
+
+This project utilizes the **ESC-50** dataset, a publicly available, open-access collection of 2,000 environmental audio recordings (5-second clips @ 44.1 kHz, resampled to 22.05 kHz) across 50 semantically balanced classes grouped into natural, human, domestic, and urban soundscapes.
+
+- **Source**: Authored by Karol J. Piczak ([ESC-50 Repository](https://github.com/karolpiczak/ESC-50)).
+- **Accessibility**: Free for research, educational, and personal non-commercial use under the Creative Commons Attribution-NonCommercial (CC BY-NC 3.0) license.
+- **Ingestion**: The repository does not bundle raw audio files; the built-in loader (`src/dataset/loader.py`) downloads and extracts the public archive on demand.
+
+### Project License
+
+The codebase, model architectures, C99 embedded engines, evaluation utilities, and documentation in this repository are released under the **MIT License**. You are free to use, copy, modify, merge, publish, distribute, and integrate the code for educational, research, or commercial applications in accordance with standard MIT terms.
+
+
